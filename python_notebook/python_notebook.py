@@ -533,8 +533,12 @@ names1880=pd.read_csv('C:\Users\Administrator\Desktop\yob1880.txt',names=['names
 
 names1880.groupby('sex').births.sum();
 
+
+
+
 #定义年份，为了标记
-years=range(1980,2011);
+import pandas as pd
+years=range(1880,2011);
 pieces=[];
 columns=['name','sex','births']
 
@@ -554,7 +558,7 @@ total_births=names.pivot_table('births',index=['year'],columns=['sex'],aggfunc='
 total_births.tail()
 
 #画图
-total_births.set_ylim(0,2500000)
+
 total_births.plot(title='Total births by sex and year')
 
 
@@ -587,6 +591,67 @@ for year,group in names.groupby(['year','sex']):
     pieces_another.append(group.sort_index(by='births',ascending=False)[:1000])
 
 top1000_another=pd.concat(pieces_another,ignore_index=True)
+
+#************************************
+#分析命名趋势
+#P40
+
+boys=top1000[top1000.sex=='M']
+
+girls=top1000[top1000.sex=='F']
+
+total_births=top1000.pivot_table('births',index='year',columns='name',aggfunc='sum')
+
+#子集
+subset = total_births[['John','Harry','Mary','Marilyn']]
+#大小写一定要对，否则不出图。
+subset.plot(subplots=True,figsize=(12,10),grid=False,title="Number of births per year")
+
+
+#前1000个名字 总和 人数占 的比例
+table=top1000.pivot_table('prop',index='year',columns='sex',aggfunc=sum)
+
+
+#yticks=np.linspace(a,b,c) 起始点：a 结束点：b 一共作c个点。 xticks=range（a,b,c） 起始点：a 结束点：b  c:间隔
+table.plot(title='Sum of table1000.prop by year and sex',yticks=np.linspace(0,1.2,13),xticks=range(1880,2020,10))
+
+
+#*********************************************************
+#P42
+#统计2010年 boys 名字比例 累加 并判断大于50% 时 的名字累积数量
+df=boys[boys.year==2010]
+
+prop_cumsum=df
+
+
+prop_cumsum=df.sort_index(by='prop',ascending=False).prop.cumsum()
+
+prop_cumsum[:10]
+
+prop_cumsum.searchsorted(0.5)
+
+
+#1900年
+
+df=boys[boys.year==1900]
+in1900=df.sort_index(by='prop',ascending=False).prop.cumsum()
+
+in1900.searchsorted(0.5)+1
+
+#结论说明 名字更加多样了
+
+def get_quantile_count(group,q=0.5):
+    group=group.sort_index(by='prop',ascending=False)
+    return group.prop.cumsum.searchsorted(q)+1
+
+diversity=top1000.groupby(['year','sex']).apply(get_quantile_count)
+diversity=diversity.unstack('sex')
+
+
+
+
+
+
 
 
 
