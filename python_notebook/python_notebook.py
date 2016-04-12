@@ -647,6 +647,112 @@ def get_quantile_count(group,q=0.5):
 diversity=top1000.groupby(['year','sex']).apply(get_quantile_count)
 diversity=diversity.unstack('sex')
 
+#**************************************
+#P44 最后一个字母的统计
+
+get_last_letter=lambda x:x[-1]
+last_letters=names.name.map(get_last_letter)
+get_last_letter.name='last_letter'
+
+table=names.pivot_table('births',index=last_letters,columns=['sex','year'],aggfunc=sum)
+
+subtable=table.reindex(columns=[1910,1960,2010],level='year')
+
+subtable.head()
+
+subtable.sum()
+
+#条形图绘制
+
+letter_prop=subtable/subtable.sum().astype(float)
+
+import matplotlib.pyplot as plt
+
+fig,axes=plt.subplots(2,1,figsize=(10,8))
+letter_prop['M'].plot(kind='bar',rot=0,ax=axes[0],title='Male')
+letter_prop['F'].plot(kind='bar',rot=0,ax=axes[1],title='Female')
+
+letter_prop=table/table.sum().astype(float)
+dny_ts=letter_prop.ix[['d','n','y'],'M'].T
+
+dny_ts.head()
+dny_ts.plot()
+
+#****************************
+#P46
+
+
+#提取部分包含字，掩码
+import numpy as np
+
+all_names=top1000.name.unique()
+
+mask=np.array(['lesl' in x.lower() for x in all_names])
+
+lesley_like=all_names[mask]
+
+lesley_like
+
+#处理_过滤
+
+filtered =top1000[top1000.name.isin(lesley_like)]
+
+filtered.groupby('name').births.sum()
+
+
+#处理——性别 年代 聚合
+
+table=filtered.pivot_table('births',index='year',columns='sex',aggfunc='sum')
+
+table=table.div(table.sum(1),axis=0)
+table.tail()
+
+table.plot(style={'M':'k-','F':'k--'})
+
+
+#******************************************************#******************************************************
+#******************************************************#******************************************************
+#******************************************************#******************************************************
+#第三章 IPython
+
+import numpy as np
+
+data={i:randn() for i in range(7)}
+
+#Pylab具有 Tab 补全功能
+#对象.<Tab> 展示可以用的方法
+
+#%timeit + 函数 可以检测语句的执行时间。
+
+#查看魔术命令
+#%magic
+
+
+#打印输入过的命令行
+#%hist
+
+#调用Qt框架GUI控制台
+
+#ipython qtconsole --pylab=inline
+
+#$ ipython -- pylab
+
+# _  和  _ _         可以调用出最近执行函数的结果
+    #_i+行号  对应行号输入的变量
+    #_+ 行号  对应行号输出的变量
+
+# 记录控制台会话，日志
+#%logstart
+#%logon
+
+#以！开头的命令 表明要再shell中执行。
+
+#%debug 迅速调试
+
+#%pdb 开启%debug
+
+#单步调试 查看书P67页
+
 
 
 
