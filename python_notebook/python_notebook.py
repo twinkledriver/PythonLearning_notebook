@@ -910,6 +910,196 @@ arr.transpose((1,0,2))
 #可以采纳
 arr.swapaxes(1,2)
 
+#*********************************************************************
+import numpy as np
+
+#ufunc
+#sqrt 开方运算
+
+arr=np.arange(10)
+
+np.sqrt(arr)
+
+#x=randn(8)
+#y=randn(8)
+np.maximum(x,y)
+
+#modf()函数 返回 数组的整数和小数部分
+np.modf(x)
+
+#书P99
+
+#abs 返回绝对值
+#square 平方
+#sign 正负号
+#ceil 大于等于该值的最小整数
+#floor 小于等于该值的最大整数
+#rint  四舍五入
+
+#add 对应元素相加
+#subtract  前面减去后面的对应元素
+#multiply 乘法（元素）
+#power 乘方
+#copysign 复制符号
+#logical_add logical_or logical_xor
+
+
+points=np.arange(-5,5,0.01)
+xs,ys=np.meshgrid(points,points)
+
+
+from matplotlib import mpl
+
+import numpy as np
+
+
+
+#********************************************绘图函数 比较重要
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+z=np.sqrt((xs**2+ys**2)) #平方和 再开方
+
+#绘图
+plt.imshow(z,cmap=plt.cm.gray);  #灰度图
+
+
+plt.colorbar()#灰度标尺
+
+#$\sqrt{x^2+y^2}$ 以符号形式展现
+
+plt.title("Image plot of $\sqrt{x^2+y^2}$ for a grid of values")
+
+
+
+#where的用法 类似 语法 x if condition else y
+
+xarr=np.array([1.1,1.2,1.3,1.4,1.5])
+yarr=np.array([2.1,2.2,2.3,2.4,2.5])
+cond=np.array([True,False,True,True,False])
+
+result=[(x if c else y)
+        for x,y,c in zip(xarr,yarr,cond)]  #zip 配对 对应位置
+
+#而用where 函数去实现 更为简单
+
+result=np.where(cond,xarr,yarr)
+
+#比如实现 值的替换
+
+arr=randn(4,4)
+
+np.where(arr>0,2,-3)
+
+
+#更为复杂的语法 也能巧妙的实现
+
+result=[]
+for i in range(n):
+    if cond1[i] and cond2[i]:
+        result.append(0)
+    elif cond1[i]:
+        result.append(1)
+    elif cond2[i]:
+        result.append(2)
+    else:
+        result.append(3)
+
+#等价于
+
+np.where(cond1&cond2,0,np.where(cond1,1,np.where(cond2,2,3)))
+
+
+
+arr=np.random.randn(5,4)
+arr.mean()
+
+np.mean(arr)
+
+#可以只对x轴操作
+arr.mean(axis=1)
+arr.sum(0)
+
+#累加  累乘 函数
+
+arr=np.array([[0,1,2],[3,4,5],[6,7,8]])
+
+arr.cumsum(0)
+arr.cumprod(1)  #0和1 代表维度
+
+
+#布尔值会被强制转换成1（True）和0（False）
+
+#sort 函数可以排序
+
+arr=randn(8)
+
+arr.sort()
+
+#对单一维度 排序
+
+arr=randn(5,3)
+
+arr.sort(0)
+#返回特定位置的值 如分位数
+
+large_arr=randn(1000)
+large_arr.sort()
+large_arr[int(0.05*len(large_arr))]
+
+#返回数组中的唯一化后的值 用unique()  除去 重复值
+
+names=np.array(['Bob','Joe','Will','Bob','Joe','Joe'])
+
+np.unique(names)
+
+#P107 还有其他集合运算
+
+
+
+#保存数组 以二进制 形式 到磁盘
+
+arr=np.arange(10)
+
+np.save('some_array',arr)
+
+np.load('some_array.npy')
+
+np.savez('array_archive.npz',a=arr,b=arr)
+
+arch=np.load('array_archive.npz')
+
+mean_ratings
+
+arr=np.loadtxt('example.txt',delimiter=',')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
