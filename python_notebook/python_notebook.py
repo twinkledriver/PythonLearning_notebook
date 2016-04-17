@@ -1072,7 +1072,100 @@ arch=np.load('array_archive.npz')
 
 mean_ratings
 
-arr=np.loadtxt('example.txt',delimiter=',')
+
+#************************************************
+
+#提取txt 以‘，’作为分界
+arr=np.loadtxt('exam.txt',delimiter=',')
+
+#矩阵乘法 dot 函数
+
+x=np.array([[1,2,3],[4,5,6]])
+y=np.array([[6,23],[-1,7],[8,9]])
+
+x.dot(y)
+
+np.dot(x,np.ones(3))
+
+
+#在linalg中包含了很多关于矩阵分界运算的  诸如 求逆 和 行列式 等运算
+from numpy.linalg import inv,qr
+
+#求逆
+
+X=randn(5,5)
+mat=X.T.dot(X)
+
+mat_inv=inv(mat)
+
+mat.dot(mat_inv)
+
+
+#解 矩阵方程
+A=np.array([[1,2],[3,5]])
+B=np.array([[7],[19]])
+x=np.linalg.solve(A,B)
+
+#*******normal得到一个标准的正态分布
+
+samples=np.random.normal(size=(4,4))
+
+#随机漫步
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+import random
+position=0
+walk=[position]
+steps=100
+for i in xrange(steps):
+    step=1 if random.randint(0,1) else -1
+    position+=step
+    walk.append(position)
+
+plt.plot(walk)
+
+#用数组运算来实现
+
+nsteps=100
+draws=np.random.randint(0,2,size=nsteps)  #产生0，1 随机整数
+steps=np.where(draws>0,1,-1)
+walk=steps.cumsum()
+
+#返回索引 （达到某个值时）
+
+(np.abs(walk)>=10).argmax()
+
+#*******************************************
+nwalks=5000
+nsteps=1000
+
+draws=np.random.randint(0,2,size=(nwalks,nsteps))
+
+steps=np.where(draws>0,1,-1)
+
+walks=steps.cumsum(1)
+
+walks2=steps.cumsum(0)
+
+#最小穿越时间
+
+hits30=(np.abs(walks)>=30).any(1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
