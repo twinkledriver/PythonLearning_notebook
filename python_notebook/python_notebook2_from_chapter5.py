@@ -150,6 +150,45 @@ format=lambda x:'%.2f' %x
 
 frame.applymap(format)
 
+#************************************************
+#对索引的排序
+
+from pandas import Series,DataFrame
+import pandas as pd
+import numpy as np
+
+obj=Series(range(4),index=['d','a','b','c'])
+
+obj.sort_index()
+
+frame=DataFrame(np.arange(8).reshape((2,4)),index=['three','one'],columns=['d','a','b','c'])
+
+frame.sort_index(axis=1,ascending=False)
+
+frame.sort_index()
+
+frame.sort_index(axis=1)
+
+# 排序
+
+obj=Series([7,-5,7,4,2,0,4])
+
+obj.rank()  #重新 按 升序 从一排序 rank（） 意思 是rank（method=‘average’） 是 又max 和min 两个排名 取均值 得到的。
+
+#另外还有几种排序 平级  处理方式 参见 P140
+
+#******************************************
+#索引有可能不是唯一的  带有重复的唯一 可以由以下 来判断
+
+obj.index.is_unique
+
+
+
+
+
+
+
+
 
 
 
