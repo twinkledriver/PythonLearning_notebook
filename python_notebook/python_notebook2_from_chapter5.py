@@ -183,6 +183,76 @@ obj.rank()  #重新 按 升序 从一排序 rank（） 意思 是rank（method=�
 obj.index.is_unique
 
 
+#***********************************************
+
+df=DataFrame([[1.4,np.nan],[7.1,-4.5],[np.nan,np.nan],[0.75,-1.3]],index=['a','b','c','d'],columns=['one','two'])
+
+df.sum()
+
+df.sum(axis=1)
+
+#axis 轴 行0 列1
+#skipna 排除 缺失值
+
+df.mean(axis=1,skipna=False)
+
+
+#返回出 各种 相关数据
+df.describe()
+
+#argmin argmax 能够获取最小值和最大值的索引位置
+#idxmin,idxmax 最小值 和 最大值 的索引值
+
+#返回Series 中的 唯一值  重复的 算一次
+
+obj=Series(['a','b','r','j','b'])
+
+uniques=obj.unique()
+
+#排序
+uniques.sort()
+
+#计算各值 出现的频率
+
+obj.value_counts()
+
+#处理 缺失值 NA 的方式：
+
+#dropna  丢弃  #fillna  用指定的值 填充缺失数据
+#
+from numpy import nan as NA
+
+data=Series([1,NA,3.5,NA,7])
+
+data.dropna()
+#或者
+data[data.notnull()]
+
+
+data=DataFrame([[1,6.5,3],[1,NA,NA],[NA,NA,NA],[NA,6.5,3]])
+
+
+#丢弃 全为NA的 行
+data.dropna(how='all')
+
+
+df=DataFrame(np.random.randn(7,3))
+df.ix[:4,1]=NA;df.ix[:2,2]=NA
+
+df.dropna(thresh=3)
+
+
+#填补 缺失 的 数据
+
+#返回新对象
+df.fillna(0)
+#对现有对象 进行 修改：
+_=df.fillna(0,inplace=True)
+
+
+
+
+
 
 
 
