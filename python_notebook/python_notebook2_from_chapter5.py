@@ -248,6 +248,65 @@ df.dropna(thresh=3)
 df.fillna(0)
 #对现有对象 进行 修改：
 _=df.fillna(0,inplace=True)
+#********************************************************
+
+
+from pandas import Series,DataFrame
+import pandas as pd
+import numpy as np
+
+#层次化 索引
+
+data=Series(np.random.randn(10),index=[['a','a','a','b','b','b','c','c','d','d'],[1,2,3,1,2,3,1,2,2,3]])
+
+data.index
+
+
+#选取 子集
+data['b']
+
+data['b':'c']
+
+data.ix[['b','d']]
+
+
+#将Series 划归 成  DataFrame  可以通过unstack方法 重新安排到 一个DataFrame中去
+
+data.unstack()
+
+data.unstack().stack()
+
+#给各层的index 赋名字
+
+frame=DataFrame(np.arange(12).reshape((4,3)),index=[['a','a','b','b'],[1,2,1,2]],columns=[['Ohio','Ohio','Colorado'],['Green','Red','Green']])
+
+frame.index.names=['key1','key2']
+frame.columns.names=['state','color']
+
+frame.swaplevel('key1','key2')
+
+
+#根据某一列 排序
+
+# level 1 代表  第二列
+frame.sortlevel(1)
+
+#统计某个标签下 key2 的和
+frame.sum(level='key2')
+
+#set_index 可以将一个或多个列转换 为 行 索引，并创建一个新的 DataFrame:
+
+frame=DataFrame({'a':range(7),'b':range(7,0,-1),'c':['one','one','one','two','two','two','two'],'d':[0,1,2,0,1,2,3]})
+
+frame2=frame.set_index(['c','d'])
+
+frame.set_index(['c','d'],drop=False)
+
+#也可以反过来 用reset_index方法，将提出来的列 重新转移到列中去：
+
+frame2.reset_index()
+
+#面板数据P159 还介绍了一种三维 的面板数据。不常用。
 
 
 
