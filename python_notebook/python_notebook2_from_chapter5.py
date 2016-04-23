@@ -308,6 +308,198 @@ frame2.reset_index()
 
 #面板数据P159 还介绍了一种三维 的面板数据。不常用。
 
+#**********************************************************************#**********************************************************************
+#**********************************************************************#**********************************************************************
+#**********************************************************************#**********************************************************************
+#第六章  数据加载、存储与文件格式
+
+#最常用的解析函数：
+
+read_csv:#默认分隔符 为逗号
+read_table:#默认分割符 为"\t"
+read_clipboard:#读取 粘贴板 中的内容
+
+import pandas as pd
+
+from pandas import Series,DataFrame
+
+df=pd.read_csv('ch06/ex1.csv')
+
+pd.read_table('ch06/ex1.csv',sep=',')
+
+#自己 指定 列名
+pd.read_csv('ch06/ex2.csv',header=None)
+
+pd.read_csv('ch06/ex2.csv',names=['a','b','c','d','Message'])
+
+names=['a','b','c','d','Message']
+pd.read_csv('ch06/ex2.csv',names=names,index_col='Message')
+
+parsed=pd.read_csv('ch06/csv_mindex.csv',index_col=['key1','key2'])
+
+#以上这些 都有明确 的分隔符 容易 载入 成表
+
+#下面要介绍自己编写正则表达式 来作为 分隔符
+
+list(open('ch06/ex3.txt'))
+
+#用正则表达式 \s+ 整理 空格
+result=pd.read_csv('ch06/ex3.txt',sep='\s+')
+
+
+#用skiprows 可以跳出文件 的某些行
+pd.read_csv('ch06/ex4.csv',skiprows=[0,2,3])
+
+result=pd.read_csv('ch06/ex5.csv')
+
+result=pd.read_csv('ch06/ex5.csv',na_values=['NULL'])
+
+#P167 描述了 很挫read_csv函数 的参数
+
+#读取文件 中 部分数据
+
+result=pd.read_csv('ch06/ex6.csv')
+
+
+result=pd.read_csv('ch06/ex6.csv',nrows=5)
+
+#逐块读取文件
+
+chunker=pd.read_csv('ch06/ex6.csv',chunksize=1000)
+
+tot=Series([])
+
+for piece in chunker:
+    tot=tot.add(piece['key'].value_counts(),fill_value=0)
+
+#提取key 列 按计数顺序 排序
+tot=tot.order(ascending=False)
+
+tot[:10]
+
+#******************************************************
+#写出 文本 格式
+
+#读入
+data=pd.read_csv('ch06/ex5.csv')
+
+#写出 数据 以逗号分开
+data.to_csv('out.csv')
+
+#加 指定 分隔符'|',  并未 输出 实际文件  而是 打印
+data.to_csv(sys.stdout,sep='|')
+#空值  填  NULL
+
+data.to_csv(sys.stdout,sep='|',na_rep='NULL')
+
+#禁用 行和列的 标签
+
+data.to_csv(sys.stdout,sep='|',na_rep='NULL',index=False,header=False)
+
+import  csv
+f=open('ch06/ex7.csv')
+reader=csv.reader(f)
+
+for line in reader:
+    print line
+
+lines=list(csv.reader(open('ch06/ex7.csv')))
+header,values=lines[0],lines[1:]
+
+zip #配对
+
+data_dict={h:v for h,v in zip(header,zip(*values))}  #注意 这里 的  *values
+
+#****************************************************
+
+#定义一个类  对常规文本 参考书 P172
+class my_dialect(csv.Dialect):
+    lineterminator = '\n'
+    delimiter = ';'
+    quotechar = '"'
+
+with open('data.csv','w') as f:
+    writer=csv.writer(f,dialect=my_dialect)
+    writer.writerow(('One','Two','Three'))
+    writer.writerow(('A','B','C'))
+
+#****************************************************
+
+#JSON格式: JavaScript Object Notation  的简写： HTTP 请求Web浏览器 和其他应用程序 之间发送数据的标准格式
+
+obj="""
+{"name":"Wes",
+ "places_lived":["United States","Spain","Germany"],
+ "pet":null,
+ "sibling":[{"name":"Scott","age":25,"pet":"zuko"},
+            {"name":"Katie","age":33,"pet":"Cisco"}]
+}
+"""
+
+#转换成Python格式
+import json
+result=json.loads(obj)
+
+#转换成JSon 格式
+asjson=json.dumps(result)
+
+#提取部分 以DataFrame形式 展现
+siblings=DataFrame(result['sibling'],columns=['name','age'])
+#**********************************************
+#对HTML 和 XML 的提炼 和 处理 P174
+
+#加入 调用的 库 （下载 安装）
+from lxml.html import parse
+from urllib2 import  urlopen
+
+#提炼网页对象
+parsed=parse(urlopen('http://blog.sciencenet.cn/home.php?mod=space&uid=425437'))
+
+
+doc=parsed.getroot()
+#提取  HTML （链接 是 a标签）
+links=doc.findall('.//a')
+# 随便选取一个
+lnk=links[2]
+# 获取 超链接引用
+lnk.get('href')
+
+lnk.text_content()
+#所有链接
+urls=[lnk.get('href') for lnk in doc.findall('.//a')]
+
+f=open('out_href.csv','w')
+for i in urls:
+    k=' '.join([str(j) for j in i])
+    f.write(k+"\n")
+f.close()
+urls.to_csv('out_href.csv')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
