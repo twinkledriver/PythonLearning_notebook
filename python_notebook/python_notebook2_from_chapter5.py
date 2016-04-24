@@ -468,12 +468,182 @@ lnk.text_content()
 #所有链接
 urls=[lnk.get('href') for lnk in doc.findall('.//a')]
 
+
+#打印所有URL 到 out_href 文件中
 f=open('out_href.csv','w')
 for i in urls:
     k=' '.join([str(j) for j in i])
     f.write(k+"\n")
 f.close()
 urls.to_csv('out_href.csv')
+
+
+#书上的例子 P174
+
+from lxml.html import parse
+from urllib2 import urlopen
+
+parsed = parse(urlopen('http://finance.yahoo.com/q/op?s=AAPL+Options'))
+
+doc = parsed.getroot()
+
+tables=doc.findall('.//table')
+
+calls=tables[1]
+puts=tables[2]
+
+#标题行 th 单元 里    数据行 td 行 里
+rows=calls.findall('.//tr')
+
+def _unpack(row,kind='td'):
+    elts=rows.findall('.//%s'%kind)
+    return [val.text_content() for val in elts]
+
+_unpack(rows[0],kind='th')
+
+#**************************************************
+#P176 整体 程序
+
+from pandas.io.parsers import TextParser
+
+def parse_options_data(table):
+    rows=table.findall('.//tr')
+    header=_unpack(rows[0],kind='th')
+    data=[_unpack(r) for r in rows[1:]]
+    return TextParser(data,names=header).get_chunk()
+
+#*********************************************************
+#XML 文件的解析 (Extensible Markup Language)
+
+#读取、
+from lxml import objectify
+path='nyct_ene.xml'
+parsed=objectify.parse(open(path))
+root=parsed.getroot()
+
+data=[]
+
+skip_fields=['responsecode']
+
+for elt in root.outage:
+    el_data={}
+    for child in elt.getchildren():
+        if child.tag in skip_fields:
+            continue
+        el_data[child.tag]=child.pyval
+    data.append(el_data)
+
+from pandas import Series,DataFrame
+
+perf=DataFrame(data)
+
+#*****************************************************
+
+from StringIO import StringIO
+tag='<a href="http://www.google.com">Google</a>'
+
+root=objectify.parse(StringIO(tag)).getroot()
+
+#********************************************************
+#以二进制 数据格式 存储
+
+import pandas as pd
+frame=pd.read_csv('ch06/ex1.csv')
+
+frame.to_pickle('ch06/frame_pickle')
+
+
+#****************************************************
+#HDF5 （hierarchical data format） 层次型 数据格式
+#用于 高效读取 二进制存储 的数据格式
+#有两种接口 PyTables 和h5py
+
+store=pd.HDFStore('mydata.h5')
+store['obj1']=frame
+store['obj1_col']=frame['a']
+
+#*******************************************
+#读取 excel 文件
+
+xls_file=pd.ExcelFile('data.xls')
+table=xls_file.parse('Sheet1')
+
+#******************************************
+#分析 HTML JSON格式 数据  用其提供的API 接口 P181
+
+import requests
+url='http://live.qq.com/json/movie/all/hot2/list_7.json'
+
+resp=requests.get(url)
+
+resp
+
+import json
+data=json.loads(resp.text)
+
+data.keys()
+
+#************************************************
+#与数据库的 交互
+#yong pandas 提供 的 嵌入式 SQLite 数据库
+
+import  sqlite3
+query="""
+CREATE TABLE test
+(a VARCHAR(20),b VARCHAR (20),
+c REAL  ,d INTEGER );"""
+con=sqlite3.connect(':memory:')
+con.execute(query)
+con.commit()
+
+
+#插入数据
+data=[('Atlanta','Georgia',1.25,6),
+      ('Tallahassee','Florida',2.6,3),
+      ('Sacramento','Califonia',1.7,5)]
+stmt="INSERT INTO test VALUES(?,?,?,?)"
+
+con.executemany(stmt,data)
+con.commit()
+
+#查看数据
+cursor=con.execute('select * from test')  #地址
+rows=cursor.fetchall()
+
+#至于fetchall()则是接收全部的返回结果行 row就是在python中定义的一个变量，
+# 用来接收返回结果行的每行数据。同样后面的r也是一个变量，用来接收row中的每个字符，
+# 如果写成C的形式就更好理解了
+#for(string row = ''; row<= cursor.fetchall(): row++)
+#    for(char r = ''; r<= row; r++)
+#printf("%c", r);
+#大致就是这么个意思！
+
+#传递给DataFrame,并用cursor 游标 添加 columns  “A”“B”“C”“D”。。。
+
+
+
+cursor.description
+
+from pandas import DataFrame
+DataFrame(rows,columns=zip(*cursor.description)[0])
+
+#另外一种简单的方式  read_frame函数
+
+import pandas.io.sql as sql
+
+sql.read_frame('select * from test',con)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
