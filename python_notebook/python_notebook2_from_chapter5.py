@@ -633,6 +633,150 @@ import pandas.io.sql as sql
 
 sql.read_frame('select * from test',con)
 
+#***********************************************#*********************************************
+#***********************************************#*********************************************
+#***********************************************#*********************************************
+#第七章 数据规整化：清理 转换 合并 重塑 P186
+
+
+# 合并 操作  合并 DataFrame
+
+from pandas import DataFrame
+import pandas as pd
+
+df1=DataFrame({'key':['b','b','a','c','a','a','b'],
+               'data1':range(7)})
+df2=DataFrame({'key':['a','b','d','c'],
+               'data2':range(4)})
+
+
+#merger 只保留 df1,df2 共有的key 值
+
+pd.merge(df1,df2)
+
+#更为 规范的 写法  merge 后指定  键  为 重叠列名
+
+pd.merge(df1,df2,on='key')
+
+# 若 键 值 名 不同，也可以 分别指定 各自的 键值 名
+
+df3=DataFrame({'lkey':['b','b','a','c','a','a','b'],
+               'data1':range(7)})
+df4=DataFrame({'rkey':['a','b','d'],
+               'data2':range(3)})
+
+pd.merge(df3,df4,left_on='lkey',right_on='rkey')
+
+pd.merge(df3,df4,left_on='lkey',right_on='rkey',how='outer')
+
+# d多对多  是 以 笛卡尔积  左右 相乘 个元素
+
+df1=DataFrame({'key':['b','b','a','c','a','b'],
+               'data1':range(6)})
+
+df2=DataFrame({'key':['a','b','a','b','d'],
+               'data2':range(5)})
+
+pd.merge(df1,df2,how='inner')
+
+#多个键 合并
+
+left=DataFrame({'key1':['foo','foo','bar'],
+                'key2':['one','two','one'],
+                'lval':[1,2,3]})
+
+right=DataFrame({'key1':['foo','foo','bar','bar'],
+                'key2':['one','one','one','two'],
+                'rval':[4,5,6,7]})
+
+pd.merge(left,right,on=['key1','key2'],how='outer')
+
+#*******************************************************
+#索引层面上 的合并 P191
+
+from pandas import DataFrame
+import pandas as pd
+left1=DataFrame({'key':['a','b','a','a','b','c'],
+                 'value':range(6)})
+
+right1=DataFrame({'group_val':[3.5,7]},index=['a','b'])
+
+pd.merge(left1,right1,left_on='key',right_index=True)
+
+pd.merge(left1,right1,left_on='key',right_index=True,how='outer')
+
+#******************************************
+lefth=DataFrame({'key1':['Ohio','Ohio','Ohio','Nevada','Nevada'],
+                 'key2':[2000,2001,2002,2001,2002],
+                 'data':np.arange(5)})
+
+righth=DataFrame(np.arange(12).reshape((6,2)),
+                 index=[['Nevada','Nevada','Ohio','Ohio','Ohio','Ohio'],[2001,2000,2000,2000,2001,2002]],
+                 columns=['event1','event2'])
+
+
+#left_on 以key1 key2 为标杆 event 项 没有的填NaN  另外 默认是 交集
+pd.merge(lefth,righth,left_on=['key1','key2'],right_index=True)
+
+pd.merge(lefth,righth,left_on=['key1','key2'],right_index=True,how='outer')
+
+#***********************************************
+left2=DataFrame([[1,2],[3,4],[5,6]],index=['a','c','e'],columns=['Ohio','Nevada'])
+
+right2=DataFrame([[7,8],[9,10],[11,12],[13,14]],index=['b','c','d','e'],columns=['Missouri','Alabama'])
+
+pd.merge(left2,right2,how='outer',left_index=True,right_index=True)
+
+#或者 效果一样
+left2.join(right2,how='outer')
+
+another=DataFrame([[7,8],[9,10],[11,12],[16,17]],index=['a','c','e','f'],columns=['New York','Oregon'])
+
+[right2,another]
+
+left2.join([right2,another])
+
+left2.join([right2,another],how='outer')
+
+#***********************************************************************
+#轴向连接 也被称为 连接 concatenation  绑定 binding  堆叠  stacking
+
+#其中 包含一个 concatenation()函数
+
+arr=np.arange(12).reshape((3,4))
+
+np.concatenate([arr,arr],axis=1)
+np.concatenate([arr,arr],axis=0)
+
+from pandas import Series
+
+s1=Series([0,1],index=['a','b'])
+
+s2=Series([2,3,4],index=['c','d','e'])
+
+s3=Series([5,6],index=['f','g'])
+
+
+# 默认concat 是axis=0  的序列
+pd.concat([s1,s2,s3])
+# 如果 改成axis=1 就会变成 一个 DateFrame
+pd.concat([s1,s2,s3],axis=1)
+
+s4=pd.concat([s1* 5,s3])
+
+
+
+pd.concat([s1,s4])
+
+pd.concat([s1,s4],axis=1,join_axes=[['a','c','b','e']])
+
+
+
+
+
+
+
+
 
 
 
