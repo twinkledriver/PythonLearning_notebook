@@ -748,13 +748,15 @@ arr=np.arange(12).reshape((3,4))
 np.concatenate([arr,arr],axis=1)
 np.concatenate([arr,arr],axis=0)
 
-from pandas import Series
+from pandas import Series,DataFrame
 
 s1=Series([0,1],index=['a','b'])
 
 s2=Series([2,3,4],index=['c','d','e'])
 
 s3=Series([5,6],index=['f','g'])
+
+s4=pd.concat([s1* 5,s3])
 
 
 # 默认concat 是axis=0  的序列
@@ -769,6 +771,203 @@ s4=pd.concat([s1* 5,s3])
 pd.concat([s1,s4])
 
 pd.concat([s1,s4],axis=1,join_axes=[['a','c','b','e']])
+
+result=pd.concat([s1,s1,s3],keys=['one','two','three'])
+
+#解除笛卡尔对应形式，一一对应。
+result.unstack()
+
+#**************************************************
+
+df1=DataFrame(np.arange(6).reshape(3,2),index=['a','b','c'],columns=['one','two'])
+
+df2=DataFrame(5+np.arange(4).reshape(2,2),index=['a','c'],columns=['three','four'])
+
+pd.concat([df1,df2],axis=1,keys=['level1','level2'])
+
+pd.concat([df1,df2],axis=1,keys=['level1','level2'],names=['upper','lower'])
+
+#concat 函数 相关应用P198
+#**************************************************
+
+#合并数据
+
+a=Series([np.nan,2.5,np.nan,3.5,4.5,np.nan],index=['f','e','d','c','b','a'])
+
+b=Series(np.arange(len(a),dtype=np.float64),index=['f','e','d','c','b','a'])
+
+#where  if  - else  结构
+np.where(pd.isnull(a),b,a)
+
+#******************************************
+#combine_first 缺失的数据 由combine 的对象来补齐
+
+#stack 列 变 行
+#unstack  行 变 列
+
+data=DataFrame(np.arange(6).reshape((2,3)),index=pd.Index(['Ohio','Colorado'],name='state'),columns=pd.Index(['one','two','three'],name='number'))
+#变成一个Series
+result=data.stack()
+
+result.unstack()
+
+#也可以 单独 解放一个 列的 编号
+
+result.unstack('state')
+
+#*************************************************
+#格式转换 长格式 转换成 短格式
+
+#载入 整个数据
+data = pd.read_csv('ch07/macrodata.csv')
+
+#提取数据中  的 年份  月份 作为 时间序列化 后IU面 要用  并命名为data
+periods = pd.PeriodIndex(year=data.year, quarter=data.quarter, name='date')
+
+#做一个DataFrame的表 数据用csv中的 提取 realgdp infl unemp 3个字段 来分析 而
+#列标 用的是 上面提取 的时间序列 格式
+
+data = DataFrame(data.to_records(),
+                 columns=pd.Index(['realgdp', 'infl', 'unemp'], name='item'),
+                 index=periods.to_timestamp('D', 'end'))
+
+#data unstack 化  可以一步一步 执行 观察 变动
+ldata = data.stack().reset_index().rename(columns={0: 'value'})
+
+ldata[:10]
+#pivot 可以将数据库 格式 的 数据 转换成 DataFrame
+
+pivoted = ldata.pivot('date', 'item', 'value')
+
+pivoted.head()
+
+#pivot 是一种快捷的方式 等价于
+unstacked=ldata.set_index(['date','item']).unstack('item')
+
+#************************************
+#在知道 数据怎么重排之后  看 数据 怎么转换
+
+#过滤
+
+data=DataFrame({'k1':['one']*3+['two']*4,'k2':[1,1,2,3,3,4,4]}
+
+#返回 Series 是否重复 行
+data.duplicated()
+#移出 重复 行
+data.drop_duplicates()
+#也可以 指定 列 移出
+data.drop_duplicates(['k1'])
+
+data['v1']=range(7)
+
+
+#************************************
+
+#映射
+
+data=DataFrame({'food':['bacon','pulled pork','bacon','Pastrami','corned beef','Bacon','pastrami','honey ham','nova lox'],'ounces':[4,3,12,6,7.5,8,3,5,6]})
+
+meat_to_animal={'bacon':'pig','pulled pork':'pig','pastrami':'cow','corned beef':'cow','honey ham':'pig','nova lox':'salmon'}
+
+#让二者 对应起来 这里存在 一个大小写的问题
+
+data['animal']=data['food'].map(str.lower).map(meat_to_animal)
+#也可以 用 lambda 函数 的 方式
+
+data['food'].map(lambda x:meat_to_animal[x.lower()])
+
+
+#替换
+from pandas import  Series
+
+data=Series([1,-999,2,-999,-1000,3])
+
+#替换 函数
+data.replace(-999,np.nan)
+
+#替换多值
+data.replace([-999,-1000],np.nan)
+
+#多值对应替换
+
+data.replace([-999,-1000],[np.nan,0])
+
+#也可以用 字典的 方式 对应替换
+data.replace({-999:np.nan,-1000:0})
+
+#******************************************************
+#重命名 轴索引
+
+data=DataFrame(np.arange(12).reshape((3,4)),index=['Ohio','Colorado','New York'],columns=['one','tow','three','four'])
+
+data.index=data.index.map(str.upper)
+#并不修改原始 数据 用方法rename
+
+data.rename(index=str.title,columns=str.upper)
+
+# 可以修改 列名 或者 行名  替换的方式  原始 并不改变
+
+data.rename(index={'OHIO':'INDIANA'},columns={'three':'peekaboo'})
+
+_=data.rename(index={'OHIO':'INDIANA'},inplace=True)
+
+#离散化 和面元  分析
+
+ages=[20,22,25,27,21,23,37,31,61,45,64,32]
+
+#划分年龄段
+
+bins=[18,25,35,60,100]
+
+#使用cut  函数
+cats=pd.cut(ages,bins)
+
+#每个数据 都划归内 哪一类
+
+#归为 第几个 分组 中
+cats.labels
+#分了 哪些 组
+cats.levels
+
+#统计 分段
+pd.value_counts(cats)
+
+#right=False 可以 改变 开闭区间
+
+pd.cut(ages,[18,26,36,61,100],right=False)
+
+#可以 给 自己 的分组 取 名字
+
+group_names=['Youth','YoungAdult','MiddleAge','Senior']
+
+pd2=pd.cut(ages,bins,labels=group_names)
+pd2.value_counts()
+
+#若不给出分组 而是以参数 替代 函数会自动 根据 比例 分组
+
+data=np.random.randn(20)
+
+#precision 小数后 几位
+pd.cut(data,4,precision=3)
+
+#根据样本分位数 进行切割
+
+import numpy as np
+
+data=np.random.randn(1000)
+
+cats=pd.qcut(data,4)
+
+pd.value_counts(cats)
+
+#自定义 分位数
+
+pd.qcut(data,[0,0.1,0.5,0.9,1])
+
+
+
+
+
 
 
 
