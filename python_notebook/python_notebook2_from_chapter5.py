@@ -964,6 +964,190 @@ pd.value_counts(cats)
 
 pd.qcut(data,[0,0.1,0.5,0.9,1])
 
+#检测和过滤 异常值
+
+#异常值 outlier  孤立点
+
+import numpy as np
+import pandas as pd
+from pandas import DataFrame,Series
+
+np.random.seed(12345)
+
+#seed( ) 用于指定随机数生成时所用算法开始的整数值，如果使用相同的seed( )值，
+# 则每次生成的随即数都相同，如果不设置这个值，则系统根据时间来自己选择这个值，
+# 此时每次生成的随机数因时间差异而不同。
+
+#seed 是为了记录后面要生成 的随机数，不然 随机数 会一直变
+
+data=DataFrame(np.random.randn(1000,4))
+
+#找出某列中 绝对值大于3 的行
+
+col=data[3]
+col[np.abs(col)>3]
+
+#绝对值 大于3 的所有行  注意 any(1)的用法
+
+data[(np.abs(data)>3).any(1)]
+
+#下面的 函数 可以限制 绝对值在3以内
+
+data[np.abs(data)>3]=np.sign(data)*3
+
+#******************************************
+df=DataFrame(np.arange(20).reshape(5,4))
+
+#根据轴的长度 产生一组新书序的整数 数组
+sampler=np.random.permutation(5)
+
+#take 方法 采纳这些 新的序列
+
+df.take(sampler)
+
+#切掉 前三行 数据
+
+df.take(sampler[0:3])
+df.take(np.random.permutation(len(df))[:3])
+
+
+#**************************************************
+#哑变量矩阵
+
+#x，y坐标  有就置1  有点像 真值图
+
+df=DataFrame({'key':['b','b','a','c','a','b'],'data1':range(6)})
+
+pd.get_dummies(df['key'])
+
+#字段前面 + 字符串
+dummies=pd.get_dummies(df['key'],prefix='key')
+
+#拼盘 DataFrame
+df_with_dummy=df[['data1']].join(dummies)
+
+#举例 处理ch02 中的 电影目录    统计
+
+mnames=['movie_id','title','genres']
+
+
+#'::'分割
+movies=pd.read_table('movies.dat',sep='::',header=None,names=mnames)
+#‘|’ 分割 条目
+genre_iter=(set(x.split('|')) for x in movies.genres)
+# 取地址 按字母顺序 排列
+genres=sorted(set.union(*genre_iter))
+
+#*********************
+dummies=DataFrame(np.zeros((len(movies),len(genres))),columns=genres)
+
+# 将每一部 电影的dummies 行 赋 1
+
+# 循环 写法 for 别名 in (a,b): 操作
+for i,gen in enumerate(movies.genres):
+    dummies.ix[i,gen.split('|')]=1
+
+movies_windic=movies.join(dummies.add_prefix('Genre_'))
+
+movies_windic.ix[0]
+
+#分区间 统计
+
+values=np.random.randn(10)
+
+values
+
+#区间 划分
+bins=[0,0.2,0.4,0.6,0.8,1]
+
+pd.get_dummies(pd.cut(values,bins))
+
+
+#************************************************************
+#对字符串的处理
+
+val='a,b,  guido'
+
+#逗号 分割
+val.split(',')
+
+#修减 空格
+
+pieces=[x.strip() for x in val.split(',')]
+
+#以指定形式 分割
+
+first,second,third=pieces
+
+first+'::'+second+'::'+third
+
+#更地道  的做法
+
+'::'.join(pieces)
+
+#统计字符串 出现次数
+
+val.count(',')
+
+# 替换
+
+val.replace(',','::')
+
+
+#************************************************************
+#  正则表达式 regex
+
+#re模块  三个类 ：模式匹配   替换  拆分
+
+import re
+
+text="foo bar\t baz \tqux"
+
+
+# '\s+' 代表了所有 分割空格 不管是 空几个 或是 字符表示
+re.split('\s+',text)
+
+#多次 调用的话 可以 先编译  以提高效率
+regex=re.compile('\s+')
+
+#findall 找出 所有匹配 正则式 的项
+regex.findall(text)
+
+#还有 像 r'C;|x' 前面有个r 代表 启用了 正则式
+
+# 举例  匹配电子邮件格式
+
+text="""Dave dave@google.com
+Steve steve@gmail.com
+Rob rob@gmail.com
+Ryan ryan@yahoo.com
+"""
+
+#字母  数字 . _ % + - 符号      {2,4} 二到四 个字符
+pattern=r'[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}'
+
+#IGNORECASE 忽略 大小写。
+regex=re.compile(pattern,flags=re.IGNORECASE)
+
+regex.findall(text)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -28,14 +28,14 @@
       <file leaf-file-name="python_notebook2_from_chapter5.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/python_notebook2_from_chapter5.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4041096">
-              <caret line="966" column="0" selection-start-line="966" selection-start-column="0" selection-end-line="966" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.90068495">
+              <caret line="1131" column="19" selection-start-line="1131" selection-start-column="19" selection-end-line="1131" selection-end-column="19" />
               <folding>
                 <element signature="e#318#353#0" expanded="true" />
-                <marker date="1461675505422" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
-                <marker date="1461675505422" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
-                <marker date="1461675505422" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
-                <marker date="1461675505422" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
+                <marker date="1461765459214" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
+                <marker date="1461765459214" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
+                <marker date="1461765459214" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
+                <marker date="1461765459214" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
               </folding>
             </state>
           </provider>
@@ -372,10 +372,10 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#318#353#0" expanded="true" />
-            <marker date="1461675505422" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
-            <marker date="1461675505422" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
-            <marker date="1461675505422" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
-            <marker date="1461675505422" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
+            <marker date="1461765459214" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
+            <marker date="1461765459214" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
           </folding>
         </state>
       </provider>
@@ -386,10 +386,10 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#318#353#0" expanded="true" />
-            <marker date="1461675505422" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
-            <marker date="1461675505422" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
-            <marker date="1461675505422" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
-            <marker date="1461675505422" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
+            <marker date="1461765459214" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
+            <marker date="1461765459214" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
           </folding>
         </state>
       </provider>
@@ -400,10 +400,10 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#318#353#0" expanded="true" />
-            <marker date="1461675505422" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
-            <marker date="1461675505422" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
-            <marker date="1461675505422" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
-            <marker date="1461675505422" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
+            <marker date="1461765459214" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
+            <marker date="1461765459214" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
           </folding>
         </state>
       </provider>
@@ -414,10 +414,10 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#318#353#0" expanded="true" />
-            <marker date="1461675505422" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
-            <marker date="1461675505422" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
-            <marker date="1461675505422" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
-            <marker date="1461675505422" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
+            <marker date="1461765459214" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
+            <marker date="1461765459214" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
           </folding>
         </state>
       </provider>
@@ -428,10 +428,24 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#318#353#0" expanded="true" />
-            <marker date="1461675505422" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
-            <marker date="1461675505422" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
-            <marker date="1461675505422" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
-            <marker date="1461675505422" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
+            <marker date="1461765459214" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
+            <marker date="1461765459214" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python_notebook2_from_chapter5.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#318#353#0" expanded="true" />
+            <marker date="1461765459214" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
+            <marker date="1461765459214" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
+            <marker date="1461765459214" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
           </folding>
         </state>
       </provider>
@@ -442,10 +456,10 @@
           <caret line="439" column="11" selection-start-line="439" selection-start-column="11" selection-end-line="439" selection-end-column="11" />
           <folding>
             <element signature="e#318#353#0" expanded="true" />
-            <marker date="1461675505422" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
-            <marker date="1461675505422" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
-            <marker date="1461675505422" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
-            <marker date="1461675505422" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
+            <marker date="1461765459214" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
+            <marker date="1461765459214" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
           </folding>
         </state>
       </provider>
@@ -456,10 +470,10 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#318#353#0" expanded="true" />
-            <marker date="1461675505422" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
-            <marker date="1461675505422" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
-            <marker date="1461675505422" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
-            <marker date="1461675505422" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
+            <marker date="1461765459214" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
+            <marker date="1461765459214" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
           </folding>
         </state>
       </provider>
@@ -470,10 +484,10 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#318#353#0" expanded="true" />
-            <marker date="1461675505422" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
-            <marker date="1461675505422" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
-            <marker date="1461675505422" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
-            <marker date="1461675505422" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
+            <marker date="1461765459214" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
+            <marker date="1461765459214" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
           </folding>
         </state>
       </provider>
@@ -484,10 +498,10 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#318#353#0" expanded="true" />
-            <marker date="1461675505422" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
-            <marker date="1461675505422" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
-            <marker date="1461675505422" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
-            <marker date="1461675505422" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
+            <marker date="1461765459214" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
+            <marker date="1461765459214" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
           </folding>
         </state>
       </provider>
@@ -501,14 +515,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/python_notebook2_from_chapter5.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4041096">
-          <caret line="966" column="0" selection-start-line="966" selection-start-column="0" selection-end-line="966" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.90068495">
+          <caret line="1131" column="19" selection-start-line="1131" selection-start-column="19" selection-end-line="1131" selection-end-column="19" />
           <folding>
             <element signature="e#318#353#0" expanded="true" />
-            <marker date="1461675505422" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
-            <marker date="1461675505422" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
-            <marker date="1461675505422" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
-            <marker date="1461675505422" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="11761:11830" placeholder="CREATE TABLE... test" />
+            <marker date="1461765459214" expanded="true" signature="12028:12060" placeholder="INSERT INTO test... " />
+            <marker date="1461765459214" expanded="true" signature="12130:12148" placeholder="select * fro... test" />
+            <marker date="1461765459214" expanded="true" signature="12641:12659" placeholder="select * fro... test" />
           </folding>
         </state>
       </provider>
