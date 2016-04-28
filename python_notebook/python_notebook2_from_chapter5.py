@@ -1131,6 +1131,18 @@ regex=re.compile(pattern,flags=re.IGNORECASE)
 
 regex.findall(text)
 
+#如果使用search 函数 它会搜寻 第一个匹配的位置 并返回位置的地址
+
+m=regex.search(text)
+
+# 打印m位置 的信息
+
+text[m.start():m.end()]
+
+#而regex.match函数 是从字符串开头匹配 不匹配的话返回None
+
+print regex.match(text)
+
 
 
 
