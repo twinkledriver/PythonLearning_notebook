@@ -1143,6 +1143,33 @@ text[m.start():m.end()]
 
 print regex.match(text)
 
+#替换字符 函数 regex.sub
+
+print regex.sub('REDACTED',text)
+
+#若想分段 匹配的字符串 用圆括号 () 包起
+
+pattern=r'([A-Z0-9.%+-]+)@([A-Z0-9.-]+)\.([A-Z]{2,4})'
+
+
+regex=re.compile(pattern,flags=re.IGNORECASE)
+kk='wesm@bright.net'
+m=regex.match(kk)
+
+kk[m.start():m.end()]
+
+m.groups()
+
+regex.findall(text)
+
+#还可以 给 分离 出 的 每一项 加上 小标题
+print regex.sub(r'Username:\1,Domain:\2,Suffix:\3',text)
+
+#还可以 以 字典 的 方式 返回 满足条件 的 项
+regex=re.compile(r"""(?P<Username>[[A-Z0-9.%+-]+])@(?P<domain>[A-Z0-9.-]+)\.(?P<suffix>[A-Z]{2,4})""",flags=re.IGNORECASE|re.VERBOSE)
+
+m=regex.match(' ')
+
 
 
 
