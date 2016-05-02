@@ -1170,8 +1170,89 @@ regex=re.compile(r"""(?P<Username>[[A-Z0-9.%+-]+])@(?P<domain>[A-Z0-9.-]+)\.(?P<
 
 m=regex.match(' ')
 
+#****************************************************
+P222
+
+import  numpy as np
+from pandas import Series,DataFrame
+data={'Dave':'dave@google.com','Steve':'steve@gmail.com','Rob':'rob@gmail.com','Wes':np.nan}
+
+data=Series(data)
+
+#*******************************************************
+#实际例子 分析 USDA食品数据库 P224
+
+import json
+import pandas as pd
+
+db=json.load(open('ch07/foods-2011-10-03.json'))
+
+db[0].keys()
 
 
+nutrients=DataFrame(db[0]['nutrients'])
+
+nutrients[:7]
+
+info_keys=['description','group','id','manufacturer']
+info=DataFrame(db,columns=info_keys)
+info[:5]
+
+#value_counts 查看食物类别
+
+pd.value_counts(info.group)[:10]
+
+
+# 整合表
+#   1          将各种营养成分转化成 DataFrame表
+#   2           将该DataFrame 表 放到nutrients 列表中
+#   3           最后使用 concat 函数把 对应的东西连接起来
+
+
+nutrients=[]
+for rec in db:
+    fnuts=DataFrame(rec['nutrients'])
+    fnuts['id']=rec['id']
+    nutrients.append(fnuts)
+
+nutrients=pd.concat(nutrients,ignore_index=True)
+
+#去重复
+
+nutrients.duplicated().sum()
+
+nutrients.drop_duplicates()
+
+#重命名 类目
+col_mapping={'description':'food',
+             'group':'fgroup'}
+info=info.rename(columns=col_mapping,copy=False)
+
+col_mapping={'description':'nutrient',
+             'group':'nutgroup'}
+
+nutrients=nutrients.rename(columns=col_mapping,copy=False)
+
+#合并info 和nutrient
+ndata=pd.merge(nutrients,info,on='id',how='outer')
+
+
+#分析数据 取中位值
+
+
+result = ndata.groupby(['nutrient', 'fgroup'])['value'].quantile(0.5)
+
+#锌元素
+result['Zinc, Zn'].order().plot(kind='barh')
+
+get_maximum=lambda x:x.xs(x.value.idxmax())
+get_minimum=lambda x:x.xs(x.value.idxmin())
+
+max_foods=by_nutrient.apply(get_maximum)[['value','food']]
+
+max_foods.food=max_foods.food.str[:50]
+
+max_foods.ix['Amino Acids']['food']
 
 
 
