@@ -120,7 +120,60 @@ ax.add_patch(circ)
 ax.add_patch(pgon)
 
 plt.savefig('figpath.svg')
-plt.savefig('figpath.pdf')
+plt.savefig('figpath.pdf')  #以不同的格式保存 图像
+
+#也可以灵活的 按照dpi 修建空白
+
+#分辨率 400  修剪  空白留白
+plt.savefig('figpath.png',dpi=400,bbox_inches='tight')
+
+#可以 把图像写入 别的 文件（不太懂这个功能，似乎是直接从内存读 而不是从磁盘）
+from io import StringIO
+buffer=StringIO()
+plt.savefig(buffer)
+plot_data=buffer.getvalue()
+
+
+#***********************************************************
+P244
+
+#还介绍了关于 画图 默认 的设置 如分辨率 x y 初始设置
+
+
+#高级绘图工具pandas 的使用（之前用的是matplotlib 画一张表 太麻烦）
+from pandas import Series,DataFrame
+
+#0到100 10步长
+s=Series(np.random.randn(10).cumsum(),index=np.arange(0,100,10))
+
+
+#P247 有很多适用的 画图 常见用法
+
+#忽略Series中index作为横坐标
+#s.plot(use_index=False)
+
+
+#柱状图 barh水平柱状图
+#s.plot(kind='bar')
+
+#折线图
+#s.plot()
+
+#曲线  x轴取值
+s.plot(kind='kde',xlim=[0,5],xticks=[0,1,4])
+
+#*****************************************************************
+#randn 正态分布 取值
+df=DataFrame(np.random.randn(10,4).cumsum(0),columns=['A','B','C','D'],index=np.arange(0,100,10))
+df.plot()
+
+
+#ax是指 图像 在子图的位置
+fig,axes=plt.subplots(2,1)
+data=Series(np.random.rand(16),index=list('abcdefghijklmnop'))
+data.plot(kind='bar',ax=axes[1],color='k',alpha=0.7,rot=0)
+
+
 
 
 
