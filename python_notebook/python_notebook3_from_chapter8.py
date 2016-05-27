@@ -174,11 +174,35 @@ data=Series(np.random.rand(16),index=list('abcdefghijklmnop'))
 data.plot(kind='bar',ax=axes[0],color='k',alpha=0.7,rot=0)
 data.plot(kind='barh',ax=axes[1],color='k',alpha=0.7,rot=0)
 
+#*****************************************************************
+#用DateFrame来画图
 
+import pandas as pd
+from pandas import Series,DataFrame
+df=DataFrame(np.random.randn(6,4),index=['one','two','three','four','five','six'],columns=pd.Index(['A','B','C','D'],name='Genus'))
+df
 
+#df.plot(kind='bar')
+df.plot(kind='bar',stacked=True,alpha=0.5)
 
+tips=pd.read_csv('tips.csv')
+party_counts=pd.crosstab(tips.day,tips.size)
+party_counts
+party_pcts=party_counts.div(party_counts.sum(1).astype(float),axis=0)
 
+party_pcts.plot(kind='bar',stacled=True)
 
+#上面的例子，无法实现。可能是因为 crosstab 已经不再是 笛卡尔积 的输出
+
+#双峰例子(标准正态分布)
+comp1=np.random.normal(0,1,size=200)
+comp2=np.random.normal(10,2,size=200)
+
+values=Series(np.concatenate([comp1,comp2]))
+
+values.hist(bins=100,alpha=0.3,color='k',normed=True)
+
+values.plot(kind='kde',style='k--')
 
 
 

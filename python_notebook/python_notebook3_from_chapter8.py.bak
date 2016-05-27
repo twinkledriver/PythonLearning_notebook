@@ -171,7 +171,8 @@ df.plot()
 #ax是指 图像 在子图的位置
 fig,axes=plt.subplots(2,1)
 data=Series(np.random.rand(16),index=list('abcdefghijklmnop'))
-data.plot(kind='bar',ax=axes[1],color='k',alpha=0.7,rot=0)
+data.plot(kind='bar',ax=axes[0],color='k',alpha=0.7,rot=0)
+data.plot(kind='barh',ax=axes[1],color='k',alpha=0.7,rot=0)
 
 
 
