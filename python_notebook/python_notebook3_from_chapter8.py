@@ -205,5 +205,116 @@ values.hist(bins=100,alpha=0.3,color='k',normed=True)
 values.plot(kind='kde',style='k--')
 
 
+#散点图
+
+import pandas as pd
+from pandas import Series,DataFrame
+
+
+macro=pd.read_csv('ch08/macrodata.csv')
+data=macro[['cpi','m1','tbilrate','unemp']]  #提取数据 中 的 选定项
+trans_data=np.log(data).diff().dropna() # 划归对数坐标，去NA
+trans_data[-5:]
+
+#绘制散点图 用scatter 函数
+
+#plt.scatter(trans_data['m1'],trans_data['unemp'])
+#plt.title('Changes in log %s vs. log %s'%('m1','unemp'))
+
+#也可用pandas 中的DataFrame 的scatter_matrix函数 更加方便
+pd.scatter_matrix(trans_data,diagonal='kde',color='k',alpha=0.3)  #对角线以kde 密度 处理
+
+
+#**************************************************************************************
+
+#一个应用 ：关于图形化 海地地震的数据
+
+
+
+#***************************************准备工作*******************************
+import pandas as pd
+from pandas import Series,DataFrame
+data=pd.read_csv('ch08/Haiti.csv')
+
+#data
+#data[['INCIDENT DATE','LATITUDE','LONGITUDE']][:10]
+#data['CATEGORY'][:6]
+
+#清楚错误 或 缺失 的数据
+data=data[(data.LATITUDE>18)&(data.LATITUDE<20)&(data.LONGITUDE>-75)&(data.LONGITUDE<-70)&data.CATEGORY.notnull()]
+
+
+
+
+#定义三个函数 获取所有分类列表   将分类信息拆分成 编码和英语名称
+def to_cat_list(catstr):
+	stripped=(x.strip() for x in catstr.split(','))  #strip() 函数 去 字符串前后空格，但保留字符串间的空格  split 以‘，’ 分隔
+	return [x for x in stripped if x]
+
+def get_all_categories(cat_series):
+	cat_sets=(set(to_cat_list(x)) for x in cat_series)
+	return sorted(set.union(*cat_sets))
+
+def get_english(cat):
+	code,names=cat.split('.')
+	if '|' in names:
+		names=names.split('|')[1]  # 如果有| 取 | 后面([1])的 作为names
+	return code,names.strip()
+
+#get_english('2.Urgences logistiques | Vital Lines  ')
+
+all_cats=get_all_categories(data.CATEGORY)
+
+#all_cats
+
+english_mapping=dict(get_english(x) for x in all_cats)  # 编码 和 名称 的映射 字典
+
+#english_mapping['2a']
+
+#english_mapping['6c']
+
+def get_code(seq):
+	return [x.split('.')[0] for x in seq if x]
+
+all_codes=get_code(all_cats)  #all_codes 前面的 a b c 代号
+code_index=pd.Index(np.unique(all_codes))			#去重复 
+code_index
+
+dummy_frame=DataFrame(np.zeros((len(data),len(code_index))),index=data.index,columns=code_index) # 按行列初始化一个全0 的Dataframe
+
+#dummy_frame.ix[:,:6]
+
+#匹配合适的项    对应置1
+for row,cat in zip(data.index,data.CATEGORY):
+	codes=get_code(to_cat_list(cat))
+	dummy_frame.ix[row,codes]=1
+
+data=data.join(dummy_frame.add_prefix('category_'))
+
+
+#*****************************************绘图开始*******************************
+from mpl_toolkits.basemap import Basemap
+import matplotlib.pyplot as plt
+
+def basic_haiti_map(ax=None,lllat=17.25,urlat=20.25,lllon=-75,urlon=-71):
+	m=Basemap(ax=ax,projection='stere',lon_0=(urlon+lllon)/2,lat_0=(urlat+lllat)/2,llcrnrlat=lllat,urcrnrlat=urlat,llcrnrlon=lllon,urcrnrlon=urlon,resolution='f')
+	m.drawcoastlines()
+	m.drawstates()
+	m.drawcountries()
+	return m
+
+fig,axes=plt.subplots(nrows=2,ncols=2,figsize=(12,10))
+fig.subplots_adjust(hspace=0.05,wspace=0.05)
+
+to_plot=['2a','1','3c','7a']
+
+lllat=17.25;urlat=20.25;lllon=-75;urlon=-71
+
+for code,ax in zip(to_plot,axes.flat):
+	m=basic_haiti_map(ax,lllat=lllat,urlat=urlat,lllon=lllon,urlon=urlon)
+	cat_data=data[data['category_%s'%code]==1]
+	x,y=m(cat_data.LONGITUDE,cat_data.LATITUDE)
+	m.plot(x,y,'k.',alpha=0.5)
+	ax.set_title('%s:%s'%(code,english_mapping[code]))
 
 
