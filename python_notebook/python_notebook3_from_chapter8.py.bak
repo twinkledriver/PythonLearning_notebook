@@ -231,13 +231,14 @@ pd.scatter_matrix(trans_data,diagonal='kde',color='k',alpha=0.3)  #对角线以k
 
 
 
-#*****************************************准备工作*******************************
-
+#***************************************准备工作*******************************
+import pandas as pd
+from pandas import Series,DataFrame
 data=pd.read_csv('ch08/Haiti.csv')
-#data
 
-data[['INCIDENT DATE','LATITUDE','LONGITUDE']][:10]
-data['CATEGORY'][:6]
+#data
+#data[['INCIDENT DATE','LATITUDE','LONGITUDE']][:10]
+#data['CATEGORY'][:6]
 
 #清楚错误 或 缺失 的数据
 data=data[(data.LATITUDE>18)&(data.LATITUDE<20)&(data.LONGITUDE>-75)&(data.LONGITUDE<-70)&data.CATEGORY.notnull()]
@@ -260,17 +261,17 @@ def get_english(cat):
 		names=names.split('|')[1]  # 如果有| 取 | 后面([1])的 作为names
 	return code,names.strip()
 
-get_english('2.Urgences logistiques | Vital Lines  ')
+#get_english('2.Urgences logistiques | Vital Lines  ')
 
 all_cats=get_all_categories(data.CATEGORY)
 
-all_cats
+#all_cats
 
 english_mapping=dict(get_english(x) for x in all_cats)  # 编码 和 名称 的映射 字典
 
-english_mapping['2a']
+#english_mapping['2a']
 
-english_mapping['6c']
+#english_mapping['6c']
 
 def get_code(seq):
 	return [x.split('.')[0] for x in seq if x]
@@ -296,13 +297,13 @@ from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
 
 def basic_haiti_map(ax=None,lllat=17.25,urlat=20.25,lllon=-75,urlon=-71):
-	m=Basemap(ax=ax,projection='stere',lon_0=(urlon+lllon)/2,lat_0=(urlat+lllat)/2,llcrnrlat=lllat,urcnrlat=urlat,llcrnrlon=lllon,urcrnrlon=urlon,resolution='f')
+	m=Basemap(ax=ax,projection='stere',lon_0=(urlon+lllon)/2,lat_0=(urlat+lllat)/2,llcrnrlat=lllat,urcrnrlat=urlat,llcrnrlon=lllon,urcrnrlon=urlon,resolution='f')
 	m.drawcoastlines()
 	m.drawstates()
 	m.drawcountries()
 	return m
 
-fig,axes=plt.subplots(nrows=2,ncols=2,figsize(12,10))
+fig,axes=plt.subplots(nrows=2,ncols=2,figsize=(12,10))
 fig.subplots_adjust(hspace=0.05,wspace=0.05)
 
 to_plot=['2a','1','3c','7a']
