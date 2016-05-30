@@ -313,8 +313,11 @@ lllat=17.25;urlat=20.25;lllon=-75;urlon=-71
 for code,ax in zip(to_plot,axes.flat):
 	m=basic_haiti_map(ax,lllat=lllat,urlat=urlat,lllon=lllon,urlon=urlon)
 	cat_data=data[data['category_%s'%code]==1]
-	x,y=m(cat_data.LONGITUDE,cat_data.LATITUDE)
+	x,y=m(cat_data.LONGITUDE.values,cat_data.LATITUDE.values)
 	m.plot(x,y,'k.',alpha=0.5)
 	ax.set_title('%s:%s'%(code,english_mapping[code]))
+
+shapefile_path = 'ch08/PortAuPrince_Roads/PortAuPrince_Roads'
+m.readshapefile(shapefile_path, 'roads')
 
 

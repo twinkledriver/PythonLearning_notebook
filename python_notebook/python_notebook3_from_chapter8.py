@@ -320,4 +320,91 @@ for code,ax in zip(to_plot,axes.flat):
 shapefile_path = 'ch08/PortAuPrince_Roads/PortAuPrince_Roads'
 m.readshapefile(shapefile_path, 'roads')
 
+#*****************************************************************
+第九章开始 数据聚合与分组运算 
+
+
+from pandas import DataFrame,Series
+
+df=DataFrame({'key1':['a','a','b','b','a'],
+						  'key2':['one','two','one','two','one'],
+						  'data1':np.random.randn(5),
+						  'data2':np.random.randn(5)})
+
+#按照key1 分组 并计算分组后data1的平均值
+grouped=df['data1'].groupby(df['key1'])
+grouped.mean()
+
+means=df['data1'].groupby([df['key1'],df['key2']]).mean()
+
+states=np.array(['Ohio','California','California','Ohio','Ohio'])
+
+years=np.array([2005,2005,2006,2005,2006])
+
+df['data1'].groupby([states,years]).mean()
+
+
+
+#*****************************************************************
+
+people=DataFrame(np.random.randn(5,5),
+									columns=['a','b','c','d','e'],
+									index=['Joe','Steve','Wes','Jim','Travis'])
+									
+people.ix[2:3,['b','c']]=np.nan
+
+mapping={'a':'red','b':'red','c':'blue','d':'blue','e':'red','f':'orange'}
+
+by_column=people.groupby(mapping,axis=1)
+
+by_column.sum()
+
+
+#调用自己的创建的函数peak_to_peak 用agg 调用
+
+def peak_to_peak(arr):
+	return arr.max()-arr.min()
+
+grouped.agg(peak_to_peak)
+
+#填充缺失值
+
+s=Series(np.random.randn(6))
+s[::2]=np.nan
+
+s.fillna(s.mean())
+
+第九章 内容枯燥 需要分组的时候 来查书
+
+
+接下来联系一个分析联邦选举的例子
+P291
+
+#加载一个很大的文件
+import pandas as pd
+fec=pd.read_csv('ch09/P00000001-ALL.csv')
+
+fec.ix[123456]
+
+unique_cands=fec.cand_nm.unique()
+
+#联系 候选人和 党派
+parties = {'Bachmann, Michelle': 'Republican',
+           'Cain, Herman': 'Republican',
+           'Gingrich, Newt': 'Republican',
+           'Huntsman, Jon': 'Republican',
+           'Johnson, Gary Earl': 'Republican',
+           'McCotter, Thaddeus G': 'Republican',
+           'Obama, Barack': 'Democrat',
+           'Paul, Ron': 'Republican',
+           'Pawlenty, Timothy': 'Republican',
+           'Perry, Rick': 'Republican',
+           "Roemer, Charles E. 'Buddy' III": 'Republican',
+           'Romney, Mitt': 'Republican',
+           'Santorum, Rick': 'Republican'}
+
+fec.cand_nm[123456:123461]
+fec.cand_nm[123456:123461].map(parties)
+fec['party']=fec.cand_nm.map()
+
 
