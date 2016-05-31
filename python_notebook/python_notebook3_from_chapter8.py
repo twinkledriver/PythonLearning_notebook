@@ -384,7 +384,7 @@ P291
 import pandas as pd
 fec=pd.read_csv('ch09/P00000001-ALL.csv')
 
-fec.ix[123456]
+#fec.ix[123456]
 
 unique_cands=fec.cand_nm.unique()
 
@@ -403,8 +403,128 @@ parties = {'Bachmann, Michelle': 'Republican',
            'Romney, Mitt': 'Republican',
            'Santorum, Rick': 'Republican'}
 
-fec.cand_nm[123456:123461]
-fec.cand_nm[123456:123461].map(parties)
-fec['party']=fec.cand_nm.map()
+#fec.cand_nm[123456:123461]
+#fec.cand_nm[123456:123461].map(parties)
+fec['party']=fec.cand_nm.map(parties)
 
+fec['party'].value_counts()
+#这里会花些许时间 应该是csv文件太大的原因
+
+#有部分 捐助 属于退款 在这里将退款的部分移除
+(fec.contb_receipt_amt>0).value_counts()
+
+fec=fec[fec.contb_receipt_amt>0]
+
+#准备一个子集 单独存放 两位主要的候选人
+fec_mrbo=fec[fec.cand_nm.isin(['Obama,Barack','Romney,Mitt'])]
+
+#以职业划分 看 不同职业主要 资助哪些 党派
+fec.contbr_occupation.value_counts()[:10]
+
+#整合和处理一些 重复信息（过滤）
+occ_mapping = {
+   'INFORMATION REQUESTED PER BEST EFFORTS' : 'NOT PROVIDED',
+   'INFORMATION REQUESTED' : 'NOT PROVIDED',
+   'INFORMATION REQUESTED (BEST EFFORTS)' : 'NOT PROVIDED',
+   'C.E.O.': 'CEO'
+}
+
+f=lambda x:occ_mapping.get(x,x)
+fec.contbr_occupation=fec.contbr_occupation.map(f)
+
+emp_mapping = {
+   'INFORMATION REQUESTED PER BEST EFFORTS' : 'NOT PROVIDED',
+   'INFORMATION REQUESTED' : 'NOT PROVIDED',
+   'SELF' : 'SELF-EMPLOYED',
+   'SELF EMPLOYED' : 'SELF-EMPLOYED',
+}
+
+# If no mapping provided, return x
+f = lambda x: emp_mapping.get(x, x)
+fec.contbr_employer = fec.contbr_employer.map(f)
+
+
+#聚合党派 和 职业 信息 过滤 出资小于200万的项
+
+by_occupation=fec.pivot_table('contb_receipt_amt',index='contbr_occupation',columns='party',aggfunc='sum')
+
+over_2mm=by_occupation[by_occupation.sum(1)>2000000]
+
+over_2mm
+
+over_2mm.plot(kind='barh')
+
+#对各党派出资最高的职业
+
+#定义一个函数
+def get_top_amounts(group,key,n=5):
+	totals=group.groupby(key)['contb_receipt_amt'].sum()
+	return totals.order(ascending=False)[n:]
+
+grouped=fec_mrbo.groupby('cand_nm')
+grouped.apply(get_top_amounts,'contbr_occupation',n=5)
+
+grouped.apply(get_top_amounts,'contbr_employer',n=7)
+
+#对出资额进行分组（缴税里 可能能用到）
+bins=np.array([0,1,10,100,1000,10000,100000,1000000,10000000])
+labels=pd.cut(fec_mrbo.contb_receipt_amt,bins)
+
+fec_mrbo=fec[fec.cand_nm.isin(['Obama,Barack','Romney,Mitt'])]
+
+#好像 也是有问题
+grouped=fec_mrbo.groupby(['cand_nm',labels])
+grouped.size().unstack(0)
+
+#****************************************************************************************
+第十章 时间序列
+from datetime import datetime
+now=datetime.now()
+#字符串 和 datetime 的 相互转换
+stamp=datetime(2011,1,3)
+
+str(stamp)
+stamp.strftime('%Y-%m-%d')
+
+# 自动解析 日期格式 针对英文  神奇！
+
+from dateutil.parser import parse
+
+parse('2016-06-18')
+parse('Feb 3,1998 12:47 AM')
+
+from pandas import Series
+longer_ts=Series(np.random.rand(1000),index=pd.date_range('1/1/2000',periods=1000))
+
+#中间大部分内容不常用 需要的时候 查书
+#从P334 开始 学习 关于 日期的绘图
+
+close_px_all=pd.read_csv('ch09/stock_px.csv',parse_dates=True,index_col=0)
+close_px=close_px_all[['AAPL','MSFT','XOM']]
+close_px=close_px.resample('B',fill_method='ffill')
+
+close_px['AAPL'].plot()			#三个公司的曲线
+close_px.ix['2009'].plot()
+
+close_px['AAPL'].ix['01-2011':'03-2011'].plot() #绘制 苹果 这几个月 股价曲线
+
+appl_q=close_px['AAPL'].resample('Q-DEC',fill_method='ffill')  #以季度的形式 重新采样
+appl_q.ix['2009':].plot()				#从2009年开始 绘图
+
+close_px.plot()
+
+pd.rolling_mean(close_px.AAPL,250).plot()  #算均值
+
+appl_std250=pd.rolling_std(close_px.AAPL,250,min_periods=10)  #标准差
+appl_std250[5:12]
+
+appl_std250.plot()
+
+#对数坐标系
+expanding_mean=lambda x:rolling_mean(x,len(x),min_periods=1)
+pd.rolling_mean(close_px,60).plot(logy=True)    
+
+
+#****************************************************************************************
+第十一章  金融和经济数据应用 用不到 很多前面重复的 不再细看了
 
