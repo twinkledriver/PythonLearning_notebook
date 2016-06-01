@@ -515,5 +515,42 @@ close_px.plot()
 
 pd.rolling_mean(close_px.AAPL,250).plot()  #算均值
 
-appl_std250=pd.rolling_std(close_px.AAPL,250,min_periods=10)
+appl_std250=pd.rolling_std(close_px.AAPL,250,min_periods=10)  #标准差
 appl_std250[5:12]
+
+appl_std250.plot()
+
+#对数坐标系
+expanding_mean=lambda x:rolling_mean(x,len(x),min_periods=1)
+pd.rolling_mean(close_px,60).plot(logy=True)    
+
+
+#****************************************************************************************
+第十一章  金融和经济数据应用 用不到 很多前面重复的 不再细看了
+
+#****************************************************************************************
+
+第十二章 数组重塑 
+
+分割成x*y的形式  P370 
+reshape()			
+
+扁平化数据 全放在一行 排起来 P371
+revel()							
+同上 只是 在副本中操作 P372
+flatten()							
+合并数组，指定axis 方向 P373
+concatenate() 
+
+vstack() 及 hstack() 合并数组 P373
+
+split() 拆分数组P374
+
+r_() 及 c_ 堆叠操作P374  
+
+repeat() 重复元素 蠕虫复制  P375
+
+tile() 延指定方向 堆叠 副本 P376
+
+广播 P378
+
